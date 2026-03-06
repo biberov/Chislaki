@@ -13,7 +13,7 @@ void SolveTaskTestBalance() {
 	double mu1 = 0.0; // фиксированно 
 	double mu2 = 1.0; // фиксированно 
 	double xi = 0.4; // фиксировано 
-	int n = 10;    // можно брать из TextBox
+	int n = 10;    
 
 	double k1 = 1.4;
 	double k2 = 0.4;
