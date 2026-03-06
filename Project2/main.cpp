@@ -83,7 +83,7 @@ void SolveTaskMainBalance() {
 	double mu1 = 0.0;
 	double mu2 = 1.0; // фиксированно для теста
 	double xi = 0.4; // фиксировано
-	int n = 10;   // можно брать из TextBox
+	int n = 10;   
 
 	// Решение на сетке n
 	std::vector<double> v_n = balance_method(n, 1, xi, 0, 0, 0, 0, 0, 0, mu1, mu2);
