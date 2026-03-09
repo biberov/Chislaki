@@ -78,7 +78,7 @@ void SolveTaskTestBalance() {
 
 void SolveTaskMainBalance() {
 	cout << "======= MAIN TASK =======";
-	cout << "Введите число разбиений n: ";
+	cout << "Введите число разбиений n: " << endl;
 	int n;
 	cin >> n;  
 
