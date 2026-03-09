@@ -78,12 +78,9 @@ void SolveTaskTestBalance() {
 
 void SolveTaskMainBalance() {
 	cout << "======= MAIN TASK =======";
-	double x0 = 0;
-	double xmax = 1;
-	double mu1 = 0.0;
-	double mu2 = 1.0; // фиксированно для теста
-	double xi = 0.4; // фиксировано
-	int n = 10;   // можно брать из TextBox
+	cout << "Введите число разбиений n: ";
+	int n;
+	cin >> n;  
 
 	// Решение на сетке n
 	std::vector<double> v_n = balance_method(n, 1, xi, 0, 0, 0, 0, 0, 0, mu1, mu2);
