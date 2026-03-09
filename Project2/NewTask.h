@@ -205,6 +205,7 @@ std::vector<double> balance_method(int n, int type,
 
 
     // Прогонка (трёхдиаг)
+
     int nEq = N;
     std::vector<double> P(nEq, 0.0), Q(nEq, 0.0);
     // Прямой ход

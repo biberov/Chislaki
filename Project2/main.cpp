@@ -3,20 +3,28 @@
 #include <string>
 #include <fstream>
 #include <cmath>
-
+#include <locale.h>
 #include <iostream>
 using namespace std;
 
+ double x0 = 0; // фиксированно 
+ double xmax = 1; // фиксированно 
+ double mu1 = 0.0; // фиксированно 
+ double mu2 = 1.0; // фиксированно (для теста)
+ double xi = 0.4; // фиксировано 
+
+void outputMessage(double n, double max_diff, double max_x) {
+	cout << "\nДля решения задачи использована равномерная сетка с числом разбиений n = " << n << endl;
+	cout << "задача должна быть решена с точностью не более e = 0.5*10^–6" << endl;
+	cout << "задача решена с точностью e2 = " << max_diff << endl;
+	cout << "максимальная разность численных решений в общих узлах сетки наблюдается в точке x = " << max_x << endl;
+}
+
 void SolveTaskTestBalance() {
-	
-	double x0 = 0; // фиксированно 
-	double xmax = 1; // фиксированно 
-	double mu1 = 0.0; // фиксированно 
-	double mu2 = 1.0; // фиксированно 
-	double xi = 0.4; // фиксировано 
+	cout << "== Test task ==" << endl;
 	cout << "Введите число разбиений n: ";
 	int n;
-	cin >>  n;
+	cin >> n;
 
 	double k1 = 1.4;
 	double k2 = 0.4;
@@ -35,19 +43,9 @@ void SolveTaskTestBalance() {
 
 	ofstream outFile("my_table1.csv");
 	outFile.clear();
-	if (!outFile.is_open()) {
-		cout << "Ошибка открытия файла!" << endl;
-	}
-
-//	outFile << "\n======= TEST TASK =======" << endl;
-
-
+	if (!outFile.is_open()) cout << "Ошибка открытия файла!" << endl;
+	outFile << "TEST" << endl;
 	outFile << "i" << ";" << "x_i" << ";" << "U(x_i)" << ";" << "V(x_i)" << ";" << "|U-V|" << "\n";
-/*	outFile << "Таблица результатов:" << endl;
-	outFile << "--------------------------------------------------" << endl;
-	outFile << "  i   |   x_i   |  U(x_i)  |  V(x_i)  |  |U-V|  " << endl;
-	outFile << "--------------------------------------------------" << endl;*/
-	
 
 	for (int i = 0; i <= n; ++i) {
 		double x = x0 + i * h;
@@ -68,34 +66,18 @@ void SolveTaskTestBalance() {
 			max_index = i;
 			max_x = x;
 		}
-/*		outFile << fixed << setprecision(6);
-		outFile << setw(4) << i << " | "
-			<< setw(7) << x << " | "
-			<< setw(8) << ua << " | "
-			<< setw(8) << uv << " | "
-			<< setw(8) << diff << endl;*/
 
 		outFile << i << ";" << x << ";" << ua << ";" << uv << ";" << diff << "\n";
 
-
-
 	}
-	cout << "Для решения задачи использована равномерная сетка с числом разбиений n = " << n << endl;
-	cout << "задача должна быть решена с точностью не более e = 0.5*10^–6" << endl;
-	cout << "задача решена с точностью e2 = " << max_diff << endl;
-	cout << "максимальная разность численных решений в общих узлах сетки наблюдается в точке x = " << max_x << endl;
+
+	outputMessage(n, max_diff, max_x);
 	outFile.close();
 
 }
 
-
-
 void SolveTaskMainBalance() {
-	double x0 = 0;
-	double xmax = 1;
-	double mu1 = 0.0;
-	double mu2 = 1.0; // фиксированно для теста
-	double xi = 0.4; // фиксировано
+	cout << "== Main task ==" << endl;
 	cout << "Введите число разбиений n: ";
 	int n;
 	cin >> n; 
@@ -112,16 +94,13 @@ void SolveTaskMainBalance() {
 	int max_index = 0;
 	double max_x = 0.0;
 
-	ofstream outFile("output.txt");
+	ofstream outFile("my_table1.csv");
 	outFile.clear();
-	if (!outFile.is_open()) {
-		cout << "Ошибка открытия файла!" << endl;
-	}
-	outFile << "======= MAIN TASK =======";
-	outFile << "Таблица результатов (сравнение сеток n и 2n):" << endl;
-	outFile << "--------------------------------------------------" << endl;
-	outFile << "  i   |   x_i   |  V_n(x_i) | V_2n(x_i) |  |V_n-V_2n|" << endl;
-	outFile << "--------------------------------------------------" << endl;
+	if(!outFile.is_open()) cout << "Ошибка открытия файла!" << endl;
+
+	outFile << "MAIN" << endl;
+	outFile << "i" << ";" << "x_i" << ";" << "V_n(x_i)" << ";" << "| V_2n(x_i) |" << ";" << "| V_n - V_2n |" <<"\n";
+
 	for (int i = 0; i <= n; ++i) {
 		double x = i * h;
 		double v2_at_x = v_2n[2 * i]; // общий узел сетки 2n
@@ -129,27 +108,18 @@ void SolveTaskMainBalance() {
 		double diff = fabs(v_n[i] - v2_at_x);
 		if (diff > max_diff) { max_diff = diff; max_index = i; }
 
-		outFile << fixed << setprecision(6);
-		outFile << setw(4) << i << " | "
-			<< setw(7) << x << " | "
-			<< setw(9) << v_n[i] << " | "
-			<< setw(9) << v2_at_x << " | "
-			<< setw(10) << diff << endl;
+		outFile << i << ";" << x << ";" << v_n[i] << ";" << v2_at_x << ";" << diff << "\n";
 
 	}
+
 	max_x = max_index * h;
-
-
-
-
-	outFile << "Для решения задачи использована равномерная сетка с числом разбиений n = " << n << endl;
-	outFile << "задача должна быть решена с точностью не более e = 0.5*10^–6" << endl;
-	outFile << "задача решена с точностью e2 = " << max_diff << endl;
-	outFile << "максимальная разность численных решений в общих узлах сетки наблюдается в точке x = " << max_x << endl;
+	outputMessage(n, max_diff, max_x);
+	outFile.close();
 
 }
 
 int main() {
+	setlocale(LC_ALL, "RUS");
 	bool choice;
 	cout << "Test = 0 ; Main = 1\n";
 	cin >> choice;
